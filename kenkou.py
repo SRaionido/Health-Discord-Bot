@@ -1,3 +1,4 @@
+import asyncio
 from discord.ext import commands
 import discord
 from dataclasses import dataclass
@@ -7,6 +8,7 @@ CH_ID = 1261862110892396604
 
 # For future getting on to other servers:
 # https://discord.com/oauth2/authorize?client_id=1261855408037953586&permissions=4776006966272&integration_type=0&scope=bot
+    
 
 @dataclass
 class Session:
@@ -50,6 +52,27 @@ async def stop(ctx):
     # human_readable_dur = str(timedelta(seconds=duration))
     human_readable_dur = str(timedelta(seconds=duration)).split(".")[0]
     await ctx.send(f"Workout session stopped! Duration: {human_readable_dur}.")
+    
+@bot.command()
+async def tabata(ctx, on, off, rounds):
+    if session.is_active:
+        await ctx.send("Session is already active!")
+        return
+    
+    session.is_active = True
+    session.start_time = ctx.message.created_at.timestamp()
+    PST_time = ctx.message.created_at - timedelta(hours=7)
+    human_time = PST_time.strftime("%H:%M")
+    await ctx.send(f"Tabata session started at {human_time}")
+    
+    for i in range(int(rounds)):
+        await ctx.send(f"Round {i+1}: Work!")
+        await asyncio.sleep(int(on))
+        await ctx.send(f"Round {i+1}: Rest!")
+        await asyncio.sleep(int(off))
+    
+    session.is_active = False
+    await ctx.send(f"Tabata session stopped!")
 
 bot.run(BOT_TOKEN)
 
