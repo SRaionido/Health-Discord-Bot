@@ -1,6 +1,7 @@
 import asyncio
 from discord.ext import commands
 import discord
+import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 BOT_TOKEN = "MTI2MTg1NTQwODAzNzk1MzU4Ng.GAyIcw.C75Ph0xwP4qre9oeUm8YV-X6Dr3aO3AVbODgMs"
@@ -8,7 +9,15 @@ CH_ID = 1261862110892396604
 
 # For future getting on to other servers:
 # https://discord.com/oauth2/authorize?client_id=1261855408037953586&permissions=4776006966272&integration_type=0&scope=bot
+
+# Format of Profiles:
+#  {
+#      "name": "John Doe",
+#      "Calories Burned Today": 0
+#  }
     
+with open('ListofProf.json') as f:
+    profiles = json.load(f)
 
 @dataclass
 class Session:
