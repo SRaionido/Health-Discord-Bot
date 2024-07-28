@@ -16,7 +16,7 @@ CH_ID = 1261862110892396604
 #      "Calories Burned Today": 0
 #  }
     
-with open('ListofProf.json') as f:
+with open('ListProf.json') as f:
     profiles = json.load(f)
 
 @dataclass
@@ -24,7 +24,7 @@ class Session:
     is_active: bool = False
     start_time: int = 0
 
-bot = commands.Bot(command_prefix= "!", intents=discord.Intents.all())
+bot = commands.Bot(command_prefix= "k!", intents=discord.Intents.all())
 session = Session()
 
 @bot.event
@@ -32,6 +32,31 @@ async def on_ready():
     print("Hello! The bot is ready!")
     channel = bot.get_channel(CH_ID)
     await channel.send("Hello! Bot is ready!")
+    
+@bot.command()
+async def addProf(ctx, name):
+    author = ctx.message.author
+    if any(profile["name"] == name for profile in profiles):
+        await ctx.send("Profile already exists!")
+    else:
+        profile = {
+            "name": name,
+            "Calories Burned Today": 0
+        }
+        profiles.append(profile)
+        with open('ListProf.json', 'w') as f:
+            json.dump(profiles, f)
+        await ctx.send(f"Profile created for {name}!")
+    
+@bot.command()
+async def profile(ctx, name):
+    author = ctx.message.author
+    for profile in profiles:
+        if profile["name"] == name:
+            await ctx.send(f"Name: {profile['name']}\nCalories Burned Today: {profile['Calories Burned Today']}")
+            return
+        else:
+            await ctx.send("Profile not found!")
     
 @bot.command()
 async def hello(ctx):
