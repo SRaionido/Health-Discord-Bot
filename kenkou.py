@@ -57,6 +57,30 @@ async def profile(ctx, name):
             return
         else:
             await ctx.send("Profile not found!")
+            
+@bot.command()
+async def addCal(ctx, name, cal):
+    author = ctx.message.author
+    for profile in profiles:
+        if profile["name"] == name:
+            profile["Calories Burned Today"] += int(cal)
+            with open('ListProf.json', 'w') as f:
+                json.dump(profiles, f)
+            await ctx.send(f"Calories added to {name}!")
+            return
+    await ctx.send("Profile not found!")
+    
+@bot.command()
+async def resetCal(ctx, name):
+    author = ctx.message.author
+    for profile in profiles:
+        if profile["name"] == name:
+            profile["Calories Burned Today"] = 0
+            with open('ListProf.json', 'w') as f:
+                json.dump(profiles, f)
+            await ctx.send(f"Calories reset for {name}!")
+            return
+    await ctx.send("Profile not found!")
     
 @bot.command()
 async def hello(ctx):
