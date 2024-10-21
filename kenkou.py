@@ -4,7 +4,7 @@ import discord
 import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-BOT_TOKEN = "MTI2MTg1NTQwODAzNzk1MzU4Ng.GAyIcw.C75Ph0xwP4qre9oeUm8YV-X6Dr3aO3AVbODgMs"
+# BOT_TOKEN = "MTI2MTg1NTQwODAzNzk1MzU4Ng.GAyIcw.C75Ph0xwP4qre9oeUm8YV-X6Dr3aO3AVbODgMs"
 CH_ID = 1261862110892396604
 
 # For future getting on to other servers:
@@ -15,6 +15,11 @@ CH_ID = 1261862110892396604
 #      "name": "John Doe",
 #      "Calories Burned Today": 0
 #  }
+
+with open ('passkey.txt', 'r') as f:
+    BOT_TOKEN = f.read().strip()
+
+print(BOT_TOKEN)
     
 with open('ListProf.json') as f:
     profiles = json.load(f)
